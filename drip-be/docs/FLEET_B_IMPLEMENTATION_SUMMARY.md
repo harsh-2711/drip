@@ -30,6 +30,7 @@ This document summarizes the implementation of Fleet B, the User Interaction & R
 - ✅ Integration with Fleet A database components
 - ✅ Integration with vector database for semantic search
 - ✅ API server setup for iOS app integration
+- ✅ Integration with Fashn.ai API for virtual try-on functionality
 
 ## How to Run
 
@@ -126,7 +127,7 @@ The Fit & Size Personalization agent recommends the correct size for products ba
 
 ### Agent H: Visual Generation
 
-The Visual Generation agent generates visualizations of outfits, styling tips, mood boards, and outfit descriptions. It uses GPT-4.5 to generate detailed prompts for image generation and styling advice.
+The Visual Generation agent generates visualizations of outfits, styling tips, mood boards, and outfit descriptions. It uses GPT-4.5 to generate detailed prompts for image generation and styling advice. The agent now integrates with the Fashn.ai API to provide virtual try-on functionality, allowing users to see how clothing items would look on them based on their uploaded images.
 
 ## Conclusion
 

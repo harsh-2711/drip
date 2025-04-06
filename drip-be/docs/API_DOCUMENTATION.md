@@ -28,21 +28,14 @@ Check if the API server is running.
 
 ### POST /stylist/persona
 
-Generate a user persona based on text input and preferences.
+Generate a user persona based on an image.
 
 #### Request
 
 ```json
 {
-  "prompt": "I need vacation outfits for a beach trip. I prefer loose-fitting clothes in earth tones.",
   "userId": "user123",
-  "bodyShape": "hourglass",
-  "skinTone": "warm beige",
-  "styleImages": ["https://example.com/image1.jpg"],
-  "preferences": {
-    "preferredColors": ["olive", "terracotta", "off-white"],
-    "dislikedStyles": ["crop tops", "tight-fitting"]
-  }
+  "userImage": "base64_encoded_image_data_here"
 }
 ```
 
@@ -53,16 +46,15 @@ Generate a user persona based on text input and preferences.
   "success": true,
   "userPersona": {
     "user_id": "user123",
-    "body_shape": "hourglass",
-    "skin_tone": "warm beige",
-    "preferred_fits": ["relaxed", "flowy"],
-    "disliked_tags": ["crop", "tight"],
-    "loved_colors": ["olive", "off-white", "terracotta"],
-    "occasions": ["resort", "beach", "vacation"],
-    "style_preferences": {
-      "aesthetic": "bohemian resort",
-      "formality": "casual",
-      "silhouette": "relaxed"
+    "gender": "Female",
+    "skin_tone": "Medium",
+    "undertone": "Warm",
+    "body_shape": "Hourglass",
+    "best_fits": ["Bodycon Fit", "Form-Fitting", "Tailored Fit"],
+    "best_colors": ["mustard yellow", "olive green", "warm browns", "burnt orange"],
+    "ideal_size": {
+      "tops": "M",
+      "bottoms": "M"
     }
   }
 }
@@ -78,17 +70,25 @@ Generate product recommendations based on a user persona.
 {
   "userPersona": {
     "user_id": "user123",
-    "body_shape": "hourglass",
-    "skin_tone": "warm beige",
-    "preferred_fits": ["relaxed", "flowy"],
-    "disliked_tags": ["crop", "tight"],
-    "loved_colors": ["olive", "off-white", "terracotta"],
-    "occasions": ["resort", "beach", "vacation"]
+    "gender": "Female",
+    "body_shape": "Hourglass",
+    "skin_tone": "Medium",
+    "undertone": "Warm",
+    "best_fits": ["Bodycon Fit", "Form-Fitting", "Tailored Fit"],
+    "best_colors": ["mustard yellow", "olive green", "warm browns", "burnt orange"],
+    "ideal_size": {
+      "tops": "M",
+      "bottoms": "M"
+    }
   },
   "filters": {
     "price_min": 20,
     "price_max": 200,
-    "gender": "female"
+    "category": "tops",
+    "loved_colors": ["terracotta", "beige"],
+    "loved_fits": ["Regular Fit", "Relaxed Fit"],
+    "dislike_tags": ["shirt:full-sleeves", "tops:crop"],
+    "user_prompt": "I need something casual for a weekend brunch"
   },
   "limit": 5
 }
@@ -124,7 +124,7 @@ Generate product recommendations based on a user persona.
 
 ### POST /feedback/refine
 
-Process user feedback and refine recommendations.
+Process user feedback and extract dislike tags.
 
 #### Request
 
@@ -132,33 +132,7 @@ Process user feedback and refine recommendations.
 {
   "userId": "user123",
   "feedback": "I like the linen shirt but would prefer something with shorter sleeves. Also, the pants are too formal for a beach vacation.",
-  "userPersona": {
-    "user_id": "user123",
-    "body_shape": "hourglass",
-    "skin_tone": "warm beige",
-    "preferred_fits": ["relaxed", "flowy"],
-    "disliked_tags": ["crop", "tight"],
-    "loved_colors": ["olive", "off-white", "terracotta"],
-    "occasions": ["resort", "beach", "vacation"]
-  },
-  "previousRecommendations": [
-    {
-      "product_id": "p123",
-      "title": "Linen Relaxed Shirt",
-      "brand": "EarthTones"
-    },
-    {
-      "product_id": "p456",
-      "title": "Formal Chino Pants",
-      "brand": "ClassicWear"
-    }
-  ],
-  "filters": {
-    "price_min": 20,
-    "price_max": 200,
-    "gender": "female"
-  },
-  "limit": 5
+  "productId": "p123"
 }
 ```
 
@@ -167,82 +141,10 @@ Process user feedback and refine recommendations.
 ```json
 {
   "success": true,
-  "updatedUserPersona": {
-    "user_id": "user123",
-    "body_shape": "hourglass",
-    "skin_tone": "warm beige",
-    "preferred_fits": ["relaxed", "flowy"],
-    "disliked_tags": ["crop", "tight", "formal", "long-sleeve"],
-    "loved_colors": ["olive", "off-white", "terracotta"],
-    "occasions": ["resort", "beach", "vacation"],
-    "style_preferences": {
-      "aesthetic": "casual resort",
-      "formality": "very casual",
-      "silhouette": "relaxed"
-    }
-  },
-  "feedbackInsights": {
-    "likedFeatures": ["linen material", "relaxed fit"],
-    "dislikedFeatures": ["long sleeves", "formal style"],
-    "preferredAlternatives": ["short sleeves", "casual bottoms"]
-  },
-  "refinedRecommendations": [
-    {
-      "product_id": "p789",
-      "title": "Short-sleeve Linen Shirt",
-      "brand": "BeachVibes",
-      "price": 69.99,
-      "currency": "USD",
-      "image_url": "https://example.com/short-sleeve.jpg",
-      "match_score": 0.96,
-      "match_reasons": [
-        "Short sleeves based on your feedback",
-        "Casual style perfect for beach vacations",
-        "Linen material you liked in previous items"
-      ]
-    },
-    // More products...
-  ]
+  "dislikeTags": ["shirt:full-sleeves", "pants:formal"]
 }
 ```
 
-### POST /feedback/response
-
-Generate a conversational response to user feedback.
-
-#### Request
-
-```json
-{
-  "feedback": "I like the linen shirt but would prefer something with shorter sleeves. Also, the pants are too formal for a beach vacation.",
-  "feedbackInsights": {
-    "likedFeatures": ["linen material", "relaxed fit"],
-    "dislikedFeatures": ["long sleeves", "formal style"],
-    "preferredAlternatives": ["short sleeves", "casual bottoms"]
-  },
-  "refinedRecommendations": [
-    {
-      "product_id": "p789",
-      "title": "Short-sleeve Linen Shirt",
-      "brand": "BeachVibes"
-    },
-    {
-      "product_id": "p101",
-      "title": "Relaxed Linen Shorts",
-      "brand": "SummerEssentials"
-    }
-  ]
-}
-```
-
-#### Response
-
-```json
-{
-  "success": true,
-  "response": "I've found some great alternatives based on your feedback! I've selected short-sleeve linen options that maintain the relaxed fit you liked, and I've replaced the formal pants with more casual options perfect for your beach vacation. The Short-sleeve Linen Shirt from BeachVibes has the same breathable material but with the shorter sleeves you wanted. I've also included some Relaxed Linen Shorts from SummerEssentials that would pair perfectly for a casual beach look."
-}
-```
 
 ## Agent G: Fit & Size Personalization
 
@@ -289,56 +191,23 @@ Generate a size recommendation for a product.
 }
 ```
 
-### POST /fit/extract-measurements
-
-Extract body measurements from an image.
-
-#### Request
-
-```json
-{
-  "imageUrl": "https://example.com/body-image.jpg"
-}
-```
-
-#### Response
-
-```json
-{
-  "success": true,
-  "measurements": {
-    "height": 165,
-    "shoulder": 38,
-    "chest": 92,
-    "waist": 74,
-    "hips": 98,
-    "inseam": 76,
-    "bodyShape": "hourglass",
-    "confidenceScore": 0.82
-  }
-}
-```
 
 ### POST /fit/advice
 
-Generate fit advice for a product.
+Generate fit advice for a product based on user persona.
 
 #### Request
 
 ```json
 {
   "productId": "p789",
-  "userMeasurements": {
-    "height": 165,
-    "weight": 60,
-    "bust": 92,
-    "waist": 74,
-    "hips": 98,
-    "shoulder": 38
-  },
-  "sizeRecommendation": {
-    "recommendedSize": "M",
-    "confidenceScore": 0.85
+  "userPersona": {
+    "gender": "Female",
+    "body_shape": "Hourglass",
+    "ideal_size": {
+      "tops": "M",
+      "bottoms": "M"
+    }
   }
 }
 ```
@@ -348,20 +217,8 @@ Generate fit advice for a product.
 ```json
 {
   "success": true,
-  "fitAdvice": {
-    "overallFit": "This shirt will provide a comfortable, slightly relaxed fit in size M.",
-    "specificAreas": {
-      "shoulders": "The shoulder seams should align perfectly with your shoulder edges.",
-      "bust": "There will be comfortable room in the bust area without being too loose.",
-      "waist": "The waist will drape nicely, creating a flattering silhouette.",
-      "length": "The shirt should hit just below your hip bone."
-    },
-    "stylingTips": [
-      "You could do a casual front-tuck to emphasize your waist.",
-      "Rolling the sleeves once will create a more casual look."
-    ],
-    "alterationSuggestions": []
-  }
+  "recommendedSize": "M",
+  "fittingAdvice": "This shirt will provide a comfortable, slightly relaxed fit in size M. The cut complements your hourglass shape by defining your waist while providing room in the bust and hips."
 }
 ```
 
@@ -396,36 +253,14 @@ Get the size chart for a product.
 
 ### POST /visual/outfit
 
-Generate a visualization of an outfit.
+Generate a virtual try-on visualization using the user's image and product image.
 
 #### Request
 
 ```json
 {
-  "products": [
-    {
-      "product_id": "p789",
-      "title": "Short-sleeve Linen Shirt",
-      "brand": "BeachVibes",
-      "style_type": "shirt",
-      "primary_color": "terracotta",
-      "fabric": "linen"
-    },
-    {
-      "product_id": "p101",
-      "title": "Relaxed Linen Shorts",
-      "brand": "SummerEssentials",
-      "style_type": "shorts",
-      "primary_color": "off-white",
-      "fabric": "linen"
-    }
-  ],
-  "userPersona": {
-    "body_shape": "hourglass",
-    "skin_tone": "warm beige"
-  },
-  "styleContext": "casual beach day",
-  "outputFormat": "url"
+  "userImage": "base64_encoded_image_data_here",
+  "productId": "p789"
 }
 ```
 
@@ -434,12 +269,7 @@ Generate a visualization of an outfit.
 ```json
 {
   "success": true,
-  "visualization": {
-    "prompt": "A photorealistic image of a beach outfit consisting of a terracotta short-sleeve linen shirt and off-white relaxed linen shorts. The outfit is styled on a female figure with an hourglass body shape and warm beige skin tone. The setting is a casual beach day with soft natural lighting. The shirt has a relaxed fit with a slight drape, and the shorts sit comfortably at the waist with a relaxed fit through the hips. The outfit creates a harmonious color palette that complements the warm beige skin tone.",
-    "imageUrl": "https://example.com/generated-outfit.jpg",
-    "format": "url",
-    "products": ["p789", "p101"]
-  }
+  "image": "base64_encoded_image_data_here"
 }
 ```
 
