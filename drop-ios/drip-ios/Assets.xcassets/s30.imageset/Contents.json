@@ -1,0 +1,21 @@
+{
+  "images" : [
+    {
+      "filename" : "PumperPantGSBlackA6A3R-BB2J-1818_A-Edit_1664x.jpg",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

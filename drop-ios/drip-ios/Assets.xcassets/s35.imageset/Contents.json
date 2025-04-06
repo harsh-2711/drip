@@ -1,0 +1,21 @@
+{
+  "images" : [
+    {
+      "filename" : "HTR460.CO0103_cf06de9b-96c0-4d72-ad21-ec9904212219.jpg",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

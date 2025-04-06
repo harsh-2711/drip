@@ -1,0 +1,21 @@
+{
+  "images" : [
+    {
+      "filename" : "d77d7ba7-c72e-bf2f-7593-8150e614de52_Japanese_20Brushed_20Twill_20Checks_20-_20Navy_20_26_20Black_1200x1500.jpg",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

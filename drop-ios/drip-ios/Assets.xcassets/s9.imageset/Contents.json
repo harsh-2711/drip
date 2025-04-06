@@ -1,0 +1,21 @@
+{
+  "images" : [
+    {
+      "filename" : "CVMG0133Q2_UFC657_ARB52_E.jpg",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
